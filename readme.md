@@ -1,6 +1,6 @@
 # Complex function plotter
 
-This script takes a complex function f(z) and plots it using domain coloring and a few visual tricks. The script is written in Python, with the specific intent of using the complex functions of numpy and scipy, and to be used with LaTeX to generate pretty graphs of complex functions for theses, dissertations, papers, and any other technical or academic document that can be written in laTeX.
+This script takes a complex function f(z) and plots it using domain coloring and a few visual tricks. The script is written in Python, with the specific intent of using the complex functions of numpy and scipy and the graphical capabilities of matplotli to to generate pretty graphs of complex functions for theses, dissertations, papers, and any other technical or academic document that can be written in LaTeX.
 
 In very simple terms, the phase of f(z) is plotted as a hue change, while the magnitude is plotted in a brightness change. The hue colors can be settable using Python's colormaps, and then imported into LaTeX using pgfplots. The brightness changes are also adjustable in levels.
 
