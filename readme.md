@@ -1,6 +1,6 @@
 # Complex function plotter
 
-This script takes a complex function f(z) and plots it using domain coloring and a few visual tricks.
+This script takes a complex function f(z) and plots it using domain coloring and a few visual tricks. The script is written in Python, with the specific intent of using the complex functions of numpy and scipy.
 
 In simple terms, the phase of f(z) is plotted as a hue change, while the magnitude is plotted in a brightness change.
 

@@ -88,7 +88,7 @@ def export_with_custom_cmap(f, levels, cmap_name='viridis', filename="complex_da
 # The colormap used in the reference website is HSV. The problem with HSV is that it is cyclic, that is, the border between -pi and pi is
 # blurred because both ends are red in color. Particularly, I like gist_rainbow because it still has the "rainbow" effect, but
 # it is not cyclic, so that one can see the angle changes between -pi and pi.
-# Colormap 	Python		pgfplots		Description
+# Colormap	Python		pgfplots		Description
 # Viridis	cmap='viridis'	colormap/viridis	Perceptually uniform
 # Hot		cmap='hot'	colormap/hot		Black to red to yellow to white
 # Cool		cmap='cool'	colormap/cool		Cyan to magenta transition
