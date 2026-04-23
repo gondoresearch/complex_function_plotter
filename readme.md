@@ -1,4 +1,4 @@
-# Complex function plotter, written by Gondolindrim
+# Complex function plotter
 
 This script takes a complex function f(z) and plots it using domain coloring and a few visual tricks.
 
@@ -14,6 +14,8 @@ The script will show the plot and save it to an image "complex_data.png". If it 
 This script was based on the website https://samuelj.li/complex-function-plotter. For an interactive plotter, you are probably better off using this reference website rather than this script.
 
 This script is licensed under the [Creative Commons Attribution 4.0 International  license](https://creativecommons.org/licenses/by/4.0/deed.en), whereby you can use this code even commercially but must credit it.
+
+There are a ton of options the script gives but I do not have time (or inclination) to write documentation, so read the code I guess. Or reach out.
 
 Some examples:
 
