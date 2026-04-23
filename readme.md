@@ -49,11 +49,13 @@ and then do `\input{mycolormap.tex}`.
 
 ## Some examples
 
-	f(z) = exp(conj(z)) - z^2
+All examples generated using the `gist_rainbow` colormap as defined above.
+
+	f(z) = exp(conj(z)) - z^2, z in [-12,12] x [-12,12]
 ![](images/expconjz_minus_zsquared.png)
 
-	f(z) = exp(z) - z^2
+	f(z) = exp(z) - z^2, z in [-12,12] x [-12,12]
 ![](images/expz_minus_zsquared.png)
 
-	And my favourite trippy one f(z) = sin(1/z)
+	And my favourite trippy one f(z) = sin(1/z), z in [-0.5,0.5] x [-0.5,0.5]
 ![](images/sin_invz.png)
