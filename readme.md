@@ -26,6 +26,8 @@ The script will show the plot and save it to an image "complex_data.png". If it 
 
 The `generate_latex_colormap` function generates LaTeX-ready RGB points from the colormaps, in case they are not defined in pgfplots. The colormap used in Samuel's website is `hsv`; the problem with this particular colormap is that it is cyclic, that is, the border between -pi and pi is blurred because both ends are red in color. Particularly, I like  `gist_rainbow` because it still has the "rainbow" effect, but it is not cyclic, so that one can see the angle changes between -pi and pi.
 
+Below is a table of the colormaps I could find that are defined in both matplotlib and pgfplots, so if you don't want the hassle of importing a customized colormap you should use these.
+
 | Colormap	| Python		| pgfplots		| Description					|
 |---------------|-----------------------|-----------------------|-----------------------------------------------|
 | Viridis	| cmap='viridis'	| colormap/viridis	| Perceptually uniform				|
@@ -38,6 +40,12 @@ The `generate_latex_colormap` function generates LaTeX-ready RGB points from the
 | Gray		| cmap='gray'		| colormap/blackwhite	| Standard grayscale				|
 
 If you want to use a customized colormap, use this function to generate a ready-to-use colormap definition for pgfplots. Specifically for the `gist_raibow`, this  repo contains a definition file "gist_rainbow_latexdef.tex" that you can just use in your tex file by adding `\input{gist_rainbow_latexdef.tex}` in your preamble. This is done in the LaTeX MWE.
+
+To generate one such file for a particular colormap, edit the script to use the colormap and dump the output into a file, like in
+
+	python complex_plot.py > mycolormap.tex
+
+and then do `\input{mycolormap.tex}`.
 
 ## Some examples
 
