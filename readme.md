@@ -14,7 +14,7 @@ This script is licensed under the [Creative Commons Attribution 4.0 Internationa
 
 There are a ton of options the script gives but I do not have time (or inclination) to write documentation, so read the code I guess. Or reach out. The options should be fairly self-explanatory.
 
-The folder 'latex_application' shows a minimal working example of a LaTeX application of the plots generated using pgfplots and TikZ, which are quite powerful, so you can tune it to your liking. The MWE includes a colorbar for the phase hue, and a grid. Again, if you use snippets from that code please cite this repository.
+The folder 'latex_application' shows a minimal working example of a LaTeX application of the plots generated using pgfplots and TikZ, which are quite powerful, so you can tune it to your liking. The MWE includes a colorbar for the phase hue, and a grid. To see the immediate results of that code, hop into the folder and type `make pdf`, which will use the bash script included to generate the final file for you in a `build` folder. Again, if you use snippets from that code please cite this repository.
 
 Some examples:
 
