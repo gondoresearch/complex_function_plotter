@@ -27,11 +27,11 @@ The script will show the plot and save it to an image "complex_data.png". If it 
 The `generate_latex_colormap` function generates LaTeX-ready RGB points from the colormaps, in case they are not defined in pgfplots. The colormap used in Samuel's website is `hsv`; the problem with this particular colormap is that it is cyclic, that is, the border between -pi and pi is blurred because both ends are red in color. Particularly, I like  `gist_rainbow` because it still has the "rainbow" effect, but it is not cyclic, so that one can see the angle changes between -pi and pi.
 
 | Colormap	| Python		| pgfplots		| Description					|
------------------------------------------------------------------------------------------------------------------
+|---------------|-----------------------|-----------------------|-----------------------------------------------|
 | Viridis	| cmap='viridis'	| colormap/viridis	| Perceptually uniform				|
 | Hot		| cmap='hot'		| colormap/hot		| Black to red to yellow to white		|
 | Cool		| cmap='cool'		| colormap/cool		| Cyan to magenta transition			|
-| Copper	| cmap='copper'		| colormap/copper		| Black to copper/light brown		|
+| Copper	| cmap='copper'		| colormap/copper	| Black to copper/light brown			|
 | Bone		| cmap='bone'		| colormap/bone		| Gray with a hint of blue; similar to MATLAB	|
 | HSV		| cmap='hsv'		| colormap/hsv		| Classic cyclic rainbow			|
 | Jet		| cmap='jet'		| colormap/jet		| Classic non-uniform rainbow			|
