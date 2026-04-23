@@ -1,5 +1,5 @@
 # Complex function plotter, written by Gondolindrim
-# For information, read the repository https://github.com/gondoresearch/complex_function_plotter
+# For information, read the repository https://github.com/gondoresearch/complex_function_plottetr
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -44,10 +44,10 @@ def normalize_brightness(abs_val, levels, min_v=0.1):
 	return np.clip(v, 0, 1)
 
 # The main function. Plots the given function and exports it to a PNG
-def export_with_custom_cmap(f, levels, cmap_name='viridis', filename="complex_data.png", x_range=(-12, 12), y_range=(-12, 12), res=2000):
+def export_with_custom_cmap(f, levels, cmap_name='viridis', filename="complex_data.png", xrange=(-12, 12), yrange=(-12, 12), res=2000, grid_mapping = True, grid_spacing=10.0, grid_opacity=0.5,grid_brightness=0.5, grid_threshold=0.8):
 	# Define coordinate grid
-	x = np.linspace(x_range[0], x_range[1], res)
-	y = np.linspace(y_range[0], y_range[1], res)
+	x = np.linspace(xrange[0], xrange[1], res)
+	y = np.linspace(yrange[0], yrange[1], res)
 	X, Y = np.meshgrid(x, y)
 
 	# Calculate function
@@ -70,14 +70,48 @@ def export_with_custom_cmap(f, levels, cmap_name='viridis', filename="complex_da
 	# Apply brightness: multiply the RGB colors by the brightness mask
 	# We add an axis to v so it broadcasts across (res, res, 3)
 	final_rgb = base_rgb * v[..., np.newaxis]
+
+	# Gridmapping
+	if grid_mapping:
+		# Create a checkerboard pattern based on the real and imaginary parts of W
+		# The % 2 operation creates the alternating pattern
+		grid_re = (np.real(W) // grid_spacing) % 2
+		grid_im = (np.imag(W) // grid_spacing) % 2
+
+		abs_W = np.abs(W) 
+
+		grid_re = (np.real(W) // grid_spacing) % 2
+		grid_im = (np.imag(W) // grid_spacing) % 2
+		chess_mask = np.logical_xor(grid_re, grid_im)
+		
+		
+		# Gridmapping with artifact prevention: when f(z) explodes, generally at infinity or around a pole, its
+		# absolute value is such that the squares of the gridmapping fall below the pixel resolution, creating a noisy blurry artifact.
+		# This defines a threshold for where the grid starts to look "noisy enough", as a fraction of the highest level defined.
+		# This probably will need some tuning to look good, and is tied to the highest level or the resolution of exporting.
+		high_mag_threshold = np.max(abs_W) * grid_threshold
+		
+		# Create a smooth fade-out factor for the grid based on magnitude
+		# grid_fade is 1.0 (full grid) at low values and 0.0 (no grid) at high values
+		grid_fade = np.clip((high_mag_threshold - abs_W) / (high_mag_threshold * 0.2), 0, 1)
+		
+		# Calculate the darkened grid layer
+		grid_multiplier = np.where(chess_mask, grid_brightness, 1.0)
+		grid_rgb = final_rgb * grid_multiplier[..., np.newaxis]
+		
+		# Apply the grid with magnitude-dependent opacity
+		# Total Opacity = User Set Opacity * Fade Factor
+		effective_opacity = grid_opacity * grid_fade[..., np.newaxis]
+		final_rgb = (1 - effective_opacity) * final_rgb + (effective_opacity * grid_rgb)
 	
+
 	# Save and show
 	plt.imsave(filename, final_rgb, origin='lower')
 	
 	fig, ax = plt.subplots()
-	ax.imshow(final_rgb, extent=[*x_range, *y_range], origin='lower', interpolation='lanczos')
+	ax.imshow(final_rgb, extent=[*xrange, *yrange], origin='lower', interpolation='lanczos')
 	
-	# Make phase colorbar match the custom map
+	# Make phase colorbar match the colormap given
 	sm = mpl.cm.ScalarMappable(cmap=cmap, norm=mpl.colors.Normalize(vmin=-np.pi, vmax=np.pi))
 	cbar = fig.colorbar(sm, ax=ax, ticks=[-np.pi, -np.pi/2, 0, np.pi/2, np.pi])
 	cbar.ax.set_yticklabels([r'$-\pi$', r'$-\pi/2$', r'0', r'$\pi/2$', r'$\pi$'])
@@ -95,6 +129,6 @@ def generate_latex_colormap(cmap_name, samples=256):
 # Example execution
 levels = generate_log_levels(-1, 8, np.e)
 cmap = 'gist_rainbow'
-export_with_custom_cmap(lambda z: np.exp(np.conj(z)) - z**2, levels, res=2000, x_range=(-12,12),y_range=(-12,12), cmap_name=cmap)
+export_with_custom_cmap(lambda z: np.exp(np.conj(z)) - z**2, levels, res=2000, xrange=(-12,12),yrange=(-12,12), cmap_name=cmap, grid_threshold=0.3)
 
 generate_latex_colormap(cmap)
