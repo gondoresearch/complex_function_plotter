@@ -6,7 +6,7 @@ This script takes a complex function f(z) and plots it using domain coloring and
 
 The first trick is done by a discontinuous color on the brightness, showing magnitude as color brightness with steps to denote changes in order of magnitude, so you can clearly see when the magnitude went from 10 to 100, or from e to e^2. And so on. There are functions in the code to generate logarithmic levels of brightness. This is because the (probably) most used functions will more often tend to infinity (see Liouville's Theorem). Meromorhpic functions tend to infinity at poles, and some functions of interest have essential singularities. Therefore it makes sense to plot orders of magnitude. If you want to give a customized array of levels this can also be done. If, however, you want to use specific levels, you can also supply those to the main function. You can have a single level by simply using the levels of minimum and maximum absolute value of the function in the particular region you are considering.
 
-The second trick is plotting the argument of f(z) as a hue. The hue colors can be settable using Python's colormaps, and then imported into LaTeX using pgfplots. The hue colormaps can be set using matplotlib's list of colormaps, which can then be exported into LaTeX to match the colorbar to the plot colormap.
+The second trick is plotting the argument of f(z) as a hue. The hue colors can be settable using Python's and matplotlib's colormaps; the script contains a function to export a particular colormap should it not be available on pgfplots, so the LaTeX colorbar can match the colorbar to the plot colormap.
 
 These two "tricks" were based on the [website by Samuel Li](https://samuelj.li/complex-function-plotter) which source code can be found [here](https://github.com/wgxli/complex-function-plotter) and on the [Wikipedia page for Domain Coloring](https://en.wikipedia.org/wiki/Domain_coloring). The links were last accessed on april 22, 2026.
 
@@ -38,7 +38,6 @@ The `generate_latex_colormap` function generates LaTeX-ready RGB points from the
 | Gray		| cmap='gray'		| colormap/blackwhite	| Standard grayscale				|
 
 If you want to use a customized colormap, use this function to generate a ready-to-use colormap definition for pgfplots. Specifically for the `gist_raibow`, this  repo contains a definition file "gist_rainbow_latexdef.tex" that you can just use in your tex file by adding `\input{gist_rainbow_latexdef.tex}` in your preamble. This is done in the LaTeX MWE.
-
 
 ## Some examples
 
