@@ -44,7 +44,21 @@ def normalize_brightness(abs_val, levels, min_v=0.1):
 	return np.clip(v, 0, 1)
 
 # The main function. Plots the given function and exports it to a PNG
-def export_with_custom_cmap(f, levels, cmap_name='viridis', filename="complex_data.png", xrange=(-12, 12), yrange=(-12, 12), res=2000, grid_mapping = True, grid_spacing=10.0, grid_opacity=0.5,grid_brightness=0.5, grid_threshold=0.8):
+def export_with_custom_cmap(
+		f, # The function
+		levels, # The levels of absolute values that define the brightness discontinuities
+		cmap_name='viridis',
+		filename="complex_data.png",
+		xrange=(-12, 12),
+		yrange=(-12, 12),
+		res=2000, # Number of points on each coordinate
+		grid_mapping = True, # Yes or no to gridmapping. The grid_* params are not used if this is false.
+		grid_spacing=10.0, # Size of the squares of the grid mapping
+		grid_opacity=0.5, # The grid mapping is a "checkerboard" pattern on top of the plot, so adjusting opacity is good
+		# If the plot brightness is above this value, gives directly 1. This can be used to limit how the checkerboard patter transforms the brightness around some discontinuities
+		grid_brightness=0.5,
+		grid_threshold=0.8 # To prevent artifacts
+	):
 	# Define coordinate grid
 	x = np.linspace(xrange[0], xrange[1], res)
 	y = np.linspace(yrange[0], yrange[1], res)
@@ -84,12 +98,11 @@ def export_with_custom_cmap(f, levels, cmap_name='viridis', filename="complex_da
 		grid_im = (np.imag(W) // grid_spacing) % 2
 		chess_mask = np.logical_xor(grid_re, grid_im)
 		
-		
 		# Gridmapping with artifact prevention: when f(z) explodes, generally at infinity or around a pole, its
 		# absolute value is such that the squares of the gridmapping fall below the pixel resolution, creating a noisy blurry artifact.
 		# This defines a threshold for where the grid starts to look "noisy enough", as a fraction of the highest level defined.
 		# This probably will need some tuning to look good, and is tied to the highest level or the resolution of exporting.
-		high_mag_threshold = np.max(abs_W) * grid_threshold
+		high_mag_threshold = np.max(levels) * grid_threshold
 		
 		# Create a smooth fade-out factor for the grid based on magnitude
 		# grid_fade is 1.0 (full grid) at low values and 0.0 (no grid) at high values
@@ -104,7 +117,6 @@ def export_with_custom_cmap(f, levels, cmap_name='viridis', filename="complex_da
 		effective_opacity = grid_opacity * grid_fade[..., np.newaxis]
 		final_rgb = (1 - effective_opacity) * final_rgb + (effective_opacity * grid_rgb)
 	
-
 	# Save and show
 	plt.imsave(filename, final_rgb, origin='lower')
 	
@@ -129,6 +141,6 @@ def generate_latex_colormap(cmap_name, samples=256):
 # Example execution
 levels = generate_log_levels(-1, 8, np.e)
 cmap = 'gist_rainbow'
-export_with_custom_cmap(lambda z: np.exp(np.conj(z)) - z**2, levels, res=2000, xrange=(-12,12),yrange=(-12,12), cmap_name=cmap, grid_threshold=0.3)
+export_with_custom_cmap(lambda z: np.exp(np.conj(z)) - z**2, levels, res=2000, xrange=(-12,12),yrange=(-12,12), cmap_name=cmap,grid_mapping = True, grid_threshold=0.3)
 
 generate_latex_colormap(cmap)
