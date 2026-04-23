@@ -84,23 +84,6 @@ def export_with_custom_cmap(f, levels, cmap_name='viridis', filename="complex_da
 	
 	plt.show()
 
-# Regarding colormaps: thus function generates LaTeX-ready RGB points from the colormaps, in case they are not defined in pgfplots.
-# The colormap used in the reference website is HSV. The problem with HSV is that it is cyclic, that is, the border between -pi and pi is
-# blurred because both ends are red in color. Particularly, I like gist_rainbow because it still has the "rainbow" effect, but
-# it is not cyclic, so that one can see the angle changes between -pi and pi.
-# Colormap	Python		pgfplots		Description
-# Viridis	cmap='viridis'	colormap/viridis	Perceptually uniform
-# Hot		cmap='hot'	colormap/hot		Black to red to yellow to white
-# Cool		cmap='cool'	colormap/cool		Cyan to magenta transition
-# Copper	cmap='copper'	colormap/copper		Black to copper/light brown
-# Bone		cmap='bone'	colormap/bone		Gray with a hint of blue; similar to MATLAB
-# HSV		cmap='hsv'	colormap/hsv		Classic cyclic rainbow
-# Jet		cmap='jet'	colormap/jet		Classic non-uniform rainbow
-# Gray		cmap='gray'	colormap/blackwhite	Standard grayscale
-#
-# If you want to use a customized colormap, use this function to generate a ready-to-use colormap definition for pgfplots. Specifically for the
-#	gist_raibow, this script should accompany a definition file "gist_rainbow_latexdef.tex" that you can just use in your tex file by adding
-#	\input{gist_rainbow_latexdef.tex} in your preamble.
 def generate_latex_colormap(cmap_name, samples=256):
 	cmap = plt.get_cmap(cmap_name)
 	colors = cmap(np.linspace(0, 1, samples))

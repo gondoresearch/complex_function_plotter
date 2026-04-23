@@ -47,3 +47,6 @@ If you want to use a customized colormap, use this function to generate a ready-
 
 	f(z) = exp(z) - z^2
 ![](images/expz_minus_zsquared.png)
+
+	And my favourite trippy one f(z) = sin(1/z)
+![](images/sin_invz.png)
