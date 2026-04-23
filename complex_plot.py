@@ -44,14 +44,16 @@ def normalize_brightness(abs_val, levels, min_v=0.1):
 	return np.clip(v, 0, 1)
 
 # The main function. Plots the given function and exports it to a PNG
-def export_with_custom_cmap(
+def complex_plot(
 		f, # The function
 		levels, # The levels of absolute values that define the brightness discontinuities
 		cmap_name='viridis',
 		filename="complex_data.png",
 		xrange=(-12, 12),
 		yrange=(-12, 12),
-		res=2000, # Number of points on each coordinate
+		savefig = True, # Save the resulting picture or not
+		res=2000, # Number of points on each coordinate,
+		min_v = 0.5, # Minimum brightness
 		grid_mapping = True, # Yes or no to gridmapping. The grid_* params are not used if this is false.
 		grid_spacing=10.0, # Size of the squares of the grid mapping
 		grid_opacity=0.5, # The grid mapping is a "checkerboard" pattern on top of the plot, so adjusting opacity is good
@@ -79,7 +81,7 @@ def export_with_custom_cmap(
 	base_rgb = base_rgba[..., :3] # Strip alpha
 	
 	# Modulate brightness and get leveled brightness mask
-	v = normalize_brightness(np.abs(W), levels, min_v=0.5)
+	v = normalize_brightness(np.abs(W), levels, min_v=min_v)
 	
 	# Apply brightness: multiply the RGB colors by the brightness mask
 	# We add an axis to v so it broadcasts across (res, res, 3)
@@ -100,7 +102,7 @@ def export_with_custom_cmap(
 		
 		# Gridmapping with artifact prevention: when f(z) explodes, generally at infinity or around a pole, its
 		# absolute value is such that the squares of the gridmapping fall below the pixel resolution, creating a noisy blurry artifact.
-		# This defines a threshold for where the grid starts to look "noisy enough", as a fraction of the highest level defined.
+		# This defines a threshold for where the grid starts to look "noisy enough" to ignore, as a fraction of the highest level defined.
 		# This probably will need some tuning to look good, and is tied to the highest level or the resolution of exporting.
 		high_mag_threshold = np.max(levels) * grid_threshold
 		
@@ -118,7 +120,7 @@ def export_with_custom_cmap(
 		final_rgb = (1 - effective_opacity) * final_rgb + (effective_opacity * grid_rgb)
 	
 	# Save and show
-	plt.imsave(filename, final_rgb, origin='lower')
+	if savefig: plt.imsave(filename, final_rgb, origin='lower')
 	
 	fig, ax = plt.subplots()
 	ax.imshow(final_rgb, extent=[*xrange, *yrange], origin='lower', interpolation='lanczos')
@@ -139,8 +141,9 @@ def generate_latex_colormap(cmap_name, samples=256):
 	print("	}\n}")
 
 # Example execution
-levels = generate_log_levels(-1, 8, np.e)
+levels = generate_log_levels(-2,8,np.e)
 cmap = 'gist_rainbow'
-export_with_custom_cmap(lambda z: np.exp(np.conj(z)) - z**2, levels, res=2000, xrange=(-12,12),yrange=(-12,12), cmap_name=cmap,grid_mapping = True, grid_threshold=0.3)
+complex_plot(lambda z: np.exp(np.conj(z)) - z**2, levels, res=2000, xrange=(-12,12),yrange=(-12,12), cmap_name=cmap,grid_mapping = True, grid_threshold=0.3)
 
+# Exports the colormap
 generate_latex_colormap(cmap)
